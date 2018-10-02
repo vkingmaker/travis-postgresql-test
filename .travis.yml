@@ -1,10 +1,25 @@
 language: node_js
 node_js: 
   -'node'
-postgres:
-  adapter: postgresql
-  database: myapp_test
-  username: postgres
+services
+  - postgresql
 before_script:
-  - "psql -c 'create database myapp_test;' -U postgres"
-  - "rake db:migrate"
+  - psql -c 'create database travis_ci_test;' -U postgres
+addons:
+  postgresql: "10"
+  apt:
+    packages:
+    - postgresql-10
+    - postgresql-client-10
+env:
+  global:
+  - PGPORT=5433
+
+
+# postgres:
+#   adapter: postgresql
+#   database: myapp_test
+#   username: postgres
+# before_script:
+#   - "psql -c 'create database myapp_test;' -U postgres"
+#   - "rake db:migrate"
