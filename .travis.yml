@@ -1,10 +1,11 @@
 language: node_js
 node_js: 
   -'node'
-services
+services:
   - postgresql
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
+  - npm install
 addons:
   postgresql: "10"
   apt:
@@ -15,11 +16,3 @@ env:
   global:
   - PGPORT=5433
 
-
-# postgres:
-#   adapter: postgresql
-#   database: myapp_test
-#   username: postgres
-# before_script:
-#   - "psql -c 'create database myapp_test;' -U postgres"
-#   - "rake db:migrate"
