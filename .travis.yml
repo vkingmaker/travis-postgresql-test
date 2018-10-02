@@ -4,14 +4,9 @@ node_js:
 services:
   - postgresql
 before_script:
-  - psql -c 'create database travis_ci_test;' -U postgres
-  - npm install
-addons:
-  postgresql: "10"
-  apt:
-    packages:
-    - postgresql-10
-    - postgresql-client-10
+  - psql -c 'create database travis;' -U postgres
+script:
+  - npm run test
 env:
   global:
   - PGPORT=5433

@@ -3,17 +3,67 @@
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let server = require('../build/src/app');
+let Client = require('pg').Client;
 
 let should = chai.should();
 
 
 chai.use(chaiHttp);
 
+let client = new Client();
+
 //Our parent block
 describe('Order', () => {
-  beforeEach((done) => { //Before each test we empty the database
-    done();
+  beforeEach('drops database',() => { 
+
+    client.query('DROP DATABASE fast-food-fast',function(err){
+      if(err){
+        console.log(err);
+        return;
+      }
+    });
   });
+      it('create database',()=>{
+        client.query('CREATE DATABASE fast-food-fast',function(err){
+          if(err){
+            console.log(err);
+            console.log('failed creating db');
+            return;
+          }
+        });
+      });
+
+      it('create user table user_tbl',()=>{
+        client.query('CREATE TABLE user_tbl',function(err){
+          if(err){
+            console.log(err);
+            console.log('failed creating table user_tbl');
+            return;
+          }
+        });
+      });
+      it('create user table menu',()=>{
+        client.query('CREATE TABLE user_tbl',function(err){
+          if(err){
+            console.log(err);
+            console.log('failed creating table menu');
+            return;
+          }
+        });
+      });
+      it('create user table order_tbl',()=>{
+        client.query('CREATE TABLE user_tbl',function(err){
+          if(err){
+            console.log(err);
+            console.log('failed creating table menu order_tbl');
+            return;
+          }
+        });
+      });
+    });
+
+    // done();
+  // });
 
 describe('/POST order', () => {
   it('it should POST an Order if the ORDER property has a value', (done) => {
@@ -61,4 +111,4 @@ describe('/POST order', () => {
       });
   });
 });
-});
+// });
