@@ -21,7 +21,7 @@ router.post("/login", function (req, res) {
         
         if (error) {
           res.json({"err": error});
-        } else {
+        } 
           if (results.rows.length && results.rows[0].password == password) {
             user.username = username;
             user.password = password;
@@ -38,7 +38,6 @@ router.post("/login", function (req, res) {
               "success": "You must be a Registered user"
             });
           }
-        }
       });
   });
 

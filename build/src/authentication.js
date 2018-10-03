@@ -41,22 +41,21 @@ router.post("/login", function (req, res) {
 
     if (error) {
       res.json({ "err": error });
-    } else {
-      if (results.rows.length && results.rows[0].password == password) {
-        _userModel2.default.username = username;
-        _userModel2.default.password = password;
-        _userModel2.default.admin = results.rows[0].admin;
+    }
+    if (results.rows.length && results.rows[0].password == password) {
+      _userModel2.default.username = username;
+      _userModel2.default.password = password;
+      _userModel2.default.admin = results.rows[0].admin;
 
-        var token = _verify2.default.getToken(_userModel2.default);
-        res.send({
-          "success": "Login successful",
-          "token": token
-        });
-      } else {
-        res.send({
-          "success": "You must be a Registered user"
-        });
-      }
+      var token = _verify2.default.getToken(_userModel2.default);
+      res.send({
+        "success": "Login successful",
+        "token": token
+      });
+    } else {
+      res.send({
+        "success": "You must be a Registered user"
+      });
     }
   });
 });
