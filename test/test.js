@@ -86,7 +86,6 @@ describe('FastFoodFast', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          res.body.token.should.be.a('string');
           res.body.should.have.property('success').eql('Login successful');
           done();
         });
