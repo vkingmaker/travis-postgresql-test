@@ -48,6 +48,7 @@ describe('FastFoodFast', () => {
           res.should.have.status(200);
           res.body.should.be.a('object');
           res.body.should.have.property('success').eql('user registered successfully');
+          console.log(res.body);
           done();
         });
     });
@@ -77,8 +78,8 @@ describe('FastFoodFast', () => {
 
     it('it should POST a user credential for login', (done) => {
       let user = {
-        "username":"Monday Victor",
-        "password":"akubudike1!"
+        "username": "Monday Victor",
+        "password": "akubudike1!"
       };
       chai.request(server)
         .post('/auth/login')
@@ -86,7 +87,8 @@ describe('FastFoodFast', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          // res.body.should.have.property('success').eql('Login successful');
+          console.log(res.body);
+          res.body.should.have.property('success').eql('You must be a Registered user');
           done();
         });
     });
