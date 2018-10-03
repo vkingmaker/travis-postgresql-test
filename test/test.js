@@ -3,112 +3,156 @@
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let server = require('../build/src/app');
-let Client = require('pg').Client;
 
 let should = chai.should();
 
-
+// DATABASE = 'postgres://lfdtmcni:7JkFYLD2LOPNQqvphsgvjjYKHgOjk4qT@pellefant.db.elephantsql.com:5432/lfdtmcni'
 chai.use(chaiHttp);
 
-let client = new Client();
+// let client = new Client();
 
-//Our parent block
-describe('Order', () => {
-  beforeEach('drops database',() => { 
-
-    client.query('DROP DATABASE fast-food-fast',function(err){
-      if(err){
-        console.log(err);
-        return;
-      }
-    });
+describe('FastFoodFast', () => {
+  beforeEach((done) => {
+    done();
   });
-      it('create database',()=>{
-        client.query('CREATE DATABASE fast-food-fast',function(err){
-          if(err){
-            console.log(err);
-            console.log('failed creating db');
-            return;
-          }
-        });
-      });
 
-      it('create user table user_tbl',()=>{
-        client.query('CREATE TABLE user_tbl',function(err){
-          if(err){
-            console.log(err);
-            console.log('failed creating table user_tbl');
-            return;
-          }
+ /*
+   * Test the /POST sign up route
+   */
+
+  describe('/SIGNUP user', () => {
+    it('it should POST a user credentials to the database', (done) => {
+      let user = {
+        "username": "Monday Victor",
+        "password": "akubudike1!"
+      };
+      chai.request(server)
+        .post('/auth/signup')
+        .send(user)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          done();
         });
-      });
-      it('create user table menu',()=>{
-        client.query('CREATE TABLE user_tbl',function(err){
-          if(err){
-            console.log(err);
-            console.log('failed creating table menu');
-            return;
-          }
-        });
-      });
-      it('create user table order_tbl',()=>{
-        client.query('CREATE TABLE user_tbl',function(err){
-          if(err){
-            console.log(err);
-            console.log('failed creating table menu order_tbl');
-            return;
-          }
-        });
-      });
     });
-
-    // done();
   // });
 
-describe('/POST order', () => {
-  it('it should POST an Order if the ORDER property has a value', (done) => {
-    let order = {
-      "uid":2,
-      "address":"7b Oyadiran Estate, Sabo ,Yaba",
-      "instruction":"I love spicy food",
-      "phone":"07031977216",
-      "food":"Fried rice and grilled chicken"
-    }
-    
-    chai.request(server)
-      .post('/orders')
-      .send(order)
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.be.a('object');
-        done();
-      });
+    it('it should POST a user', (done) => {
+      let user = {
+        "username":"Monday Victor",
+        "password":"vkingmaker1!"
+      };
+      chai.request(server)
+        .post('/auth/signup')
+        .send(user)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('success').eql('user registered successfully');
+          done();
+        });
+    });
   });
-  
-  it('it should POST an order ', (done) => {
-    let order = {
-      "uid":2,
-      "address":"7b Oyadiran Estate, Sabo ,Yaba",
-      "instruction":"I love spicy food",
-      "phone":"07031977216",
-      "food":"Fried rice and grilled chicken"
-    }
-    
-    chai.request(server)
-      .post('/orders')
-      .send(order)
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.be.a('object');
-        res.body.should.have.property('message').eql('Your order has been placed!');
-        res.body.addedOrder.should.have.property('uid');
-        res.body.addedOrder.should.have.property('address');
-        res.body.addedOrder.should.have.property('instruction');
-        res.body.addedOrder.should.have.property('phone');
-        res.body.addedOrder.should.have.property('food');
-        res.body.addedOrder.should.have.property('instruction');
-        done();
-      });
+
+
+   /*
+   * Test the /POST login route
+   */
+
+  describe('/LOGIN user', () => {
+    it('it should POST a user credentials to the database', (done) => {
+      let user = {
+        "username": "Monday Victor",
+        "password": "akubudike1!"
+      };
+      chai.request(server)
+        .post('/auth/login')
+        .send(user)
+        .end((err,res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          done();
+        });
+    });
+  // });
+
+    it('it should POST a user credential for login', (done) => {
+      let user = {
+        "username":"Monday Victor",
+        "password":"vkingmaker1!"
+      };
+      chai.request(server)
+        .post('/auth/login')
+        .send(user)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.token.should.be.a('string');
+          res.body.should.have.property('success').eql('Login successful');
+          done();
+        });
+    });
   });
+  /*
+   * Test the /GET route
+   */
+  // describe('/GET order', () => {
+  //   it('it should GET all the orders', (done) => {
+  //     chai.request(server)
+  //       .get('/orders')
+  //       .end((err, res) => {
+  //         res.should.have.status(200);
+  //         res.body.should.be.a('array');
+  //         res.body.length.should.be.eql(5);
+  //         done();
+  //       });
+  //   });
+  // });
+
+  // describe('/POST order', () => {
+  //   it('it should POST an Order if the ORDER property has a value', (done) => {
+  //     let order = {
+  //       "uid":2,
+  //       "address":"7b Oyadiran Estate, Sabo ,Yaba",
+  //       "instruction":"I love spicy food",
+  //       "phone":"07031977216",
+  //       "food":"Fried rice and grilled chicken"
+  //     }
+
+  //     chai.request(server)
+  //       .post('/orders')
+  //       .send(order)
+  //       .end((err, res) => {
+  //         res.should.have.status(200);
+  //         res.body.should.be.a('object');
+  //         done();
+  //       });
+  //   });
+
+  //   it('it should POST an order ', (done) => {
+  //     let order = {
+  //       "uid":2,
+  //       "address":"7b Oyadiran Estate, Sabo ,Yaba",
+  //       "instruction":"I love spicy food",
+  //       "phone":"07031977216",
+  //       "food":"Fried rice and grilled chicken"
+  //     }
+
+  //     chai.request(server)
+  //       .post('/orders')
+  //       .send(order)
+  //       .end((err, res) => {
+  //         res.should.have.status(200);
+  //         res.body.should.be.a('object');
+  //         res.body.should.have.property('message').eql('Your order has been placed!');
+  //         res.body.addedOrder.should.have.property('uid');
+  //         res.body.addedOrder.should.have.property('address');
+  //         res.body.addedOrder.should.have.property('instruction');
+  //         res.body.addedOrder.should.have.property('phone');
+  //         res.body.addedOrder.should.have.property('food');
+  //         res.body.addedOrder.should.have.property('instruction');
+  //         done();
+  //       });
+  //   });
+  // });
 });
-// });
