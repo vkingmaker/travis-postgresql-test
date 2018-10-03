@@ -6,7 +6,6 @@ let server = require('../build/src/app');
 
 let should = chai.should();
 
-// DATABASE = 'postgres://lfdtmcni:7JkFYLD2LOPNQqvphsgvjjYKHgOjk4qT@pellefant.db.elephantsql.com:5432/lfdtmcni'
 chai.use(chaiHttp);
 
 // let client = new Client();
