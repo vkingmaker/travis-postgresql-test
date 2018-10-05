@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken';
-import user from "./userModel"
+// import user from "./userModel"
 
 
 module.exports = {
-    getToken : (user )=> {
+    getToken : (user)=> {
         return jwt.sign(user,process.env.secretOrPrivateKey,{
             expiresIn: 3600
         });
@@ -12,14 +12,18 @@ module.exports = {
     verifyAdmin:(req,res,next) => {
         let token = req.body.token || req.query.token || req.headers['x-access-token'];
 
-        if(token && +user.admin) {
+        if(token) {
             jwt.verify(token,process.env.secretOrPrivateKey,(err,decoded)=>{
+
+                if(decoded.admin){
+                    console.log('We got here');
+                    req.decoded = decoded;
+                    next(); 
+                 }
+               
                 if(err){
-                    let err = {"status":401,"message":"You arenot authenticated!"};
+                    let err = {"status":401,"message":"You are not authenticated!"};
                     res.json(err);
-                }else{
-                   req.decoded = decoded;
-                   next(); 
                 }
             });
         } else{

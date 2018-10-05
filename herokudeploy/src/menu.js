@@ -7,6 +7,7 @@ import {Client} from 'pg';
 const router = express.Router();
 const client = new Client({
     connectionString: process.env.DATABASE || 'postgres://Monday:akubudike1!@localhost/fast-food-fast'
+    // connectionString:'postgres://victor:akubudike1!@localhost/fast-food-fast'
   });
 client.connect()  
 .then(() => console.log('connected'))
@@ -27,21 +28,23 @@ router.get('/',(req,res)=>{
                 "table": results.rows
             });
         }
-        // client.end();
     });
 });
 
 
 router.route('/')
-.post(verify.verifyAdmin,(req,res,next)=>{
-    // client.connect();
+.post(verify.verifyAdmin,(req,res)=>{
  let food = req.body.food;
+ let description = req.body.description;
+ let price = +req.body.price;
+ let pic_url = req.body.pic_url;
 
- client.query('INSERT INTO menu (food) VALUES ($1)',[food],(error)=>{
+
+ client.query('INSERT INTO menu (food,description,price,pic_url) VALUES ($1,$2,$3,$4)',[food,description,price,pic_url],(error)=>{
     if (error) {
         res.json({
             "code": 400,
-            "failed": error
+            "failed": error.detail
         })
     } else {
         res.json({
@@ -49,7 +52,6 @@ router.route('/')
             "success": "the food has been added to the menu table"
         });
     }
-    // client.end();
 });
 });
 

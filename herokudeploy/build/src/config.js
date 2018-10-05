@@ -7,11 +7,3 @@ var _dotenv2 = _interopRequireDefault(_dotenv);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _dotenv2.default.config();
-
-// const client = new Client();
-// const client = new Client({
-//     connectionString: process.env.DATABASE
-//   });
-
-// client.connect();
-// export default Client;
