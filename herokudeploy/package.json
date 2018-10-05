@@ -14,9 +14,9 @@
     "npm": "6.4.1"
   },
   "scripts": {
-    "start": "node build/src/app.js",
-    "clean": "rimraf dist",
-    "build": "babel src/**/*.js --out-dir build --presets=es2015",
+    "start": "npm run build && node build/src/app.js",
+    "clean": "rimraf build",
+    "build": "npm run clean && babel src/**/*.js --out-dir build --presets=es2015",
     "test": "npm run create && mocha test/*.js",
     "lint": "esw -w src test",
     "create": "babel-node ./.tables.js"
